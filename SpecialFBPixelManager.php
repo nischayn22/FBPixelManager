@@ -75,7 +75,7 @@ class SpecialFBPixelManager extends SpecialPage {
 				break;
 			}
 
-			$title = basename( $pagename );
+			$title = str_replace( ' ', "_", end( explode( '/', $pagename ) ) );
 			$title = Title::newFromText( $title );
 
 			if ( !$title || !$title->getArticleID() ) {
