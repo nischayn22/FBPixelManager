@@ -1,0 +1,40 @@
+{
+	"name": "FBPixelManager",
+	"version": "0.0.0",
+	"author": [
+		"Nischayn22",
+		"WikiWorks"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:FBPixelManager",
+	"license-name": "MIT",
+	"type": "other",
+	"AutoloadClasses": {
+		"FBPixelManager": "FBPixelManager.php",
+		"SpecialFBPixelManager": "SpecialFBPixelManager.php"
+	},
+	"SpecialPages": {
+		"FBPixelManager": "SpecialFBPixelManager"
+	},
+	"config": {
+		"FBPixel": ""
+	},
+	"MessagesDirs": {
+		"FBPixelManager": [
+			"i18n"
+		]
+	},
+	"Hooks": {
+		"BeforeInitialize": [
+			"FBPixelManager::onBeforeInitialize"
+		]
+	},
+	"AvailableRights": [
+		"fbpixelmanager"
+	],
+	"GroupPermissions": {
+		"sysop": {
+			"fbpixelmanager" : true
+		}
+	},
+	"manifest_version": 1
+}
