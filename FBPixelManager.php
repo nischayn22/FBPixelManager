@@ -2,6 +2,17 @@
 
 class FBPixelManager {
 
+	/**
+	 *
+	 * @param DatabaseUpdater $updater
+	 * @return boolean
+	 */
+	public static function onLoadExtensionSchemaUpdates( DatabaseUpdater $updater ) {
+		$updater->addExtensionTable( 'fbpixelid_map',
+			__DIR__ . '/fbpixelid_map.sql', true );
+		return true;
+	}
+
 	public static function onBeforeInitialize( &$title, &$article, &$output, &$user, $request, $mediaWiki ) {
 		global $wgFBPixel;
 		$dbr = wfGetDB( DB_REPLICA );
@@ -11,9 +22,9 @@ class FBPixelManager {
 		}
 
 		$existingValue = $dbr->selectField(
-			'page_props',
-			'pp_value',
-			[ 'pp_page' => $title->getArticleID(), 'pp_propname' => 'fb_pixel_id' ],
+			'fbpixelid_map',
+			'pixel_id',
+			[ 'page_id' => $title->getArticleID() ],
 			__METHOD__
 		);
 
@@ -21,9 +32,9 @@ class FBPixelManager {
 			$pixel_id = $existingValue;
 		} else {
 			$existingValue = $dbr->selectField(
-				'page_props',
-				'pp_value',
-				[ 'pp_page' => Title::newMainPage()->getArticleID(), 'pp_propname' => 'fb_pixel_id' ],
+				'fbpixelid_map',
+				'pixel_id',
+				[ 'page_id' => Title::newMainPage()->getArticleID() ],
 				__METHOD__
 			);
 			if ( $existingValue ) {

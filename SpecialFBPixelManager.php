@@ -35,9 +35,9 @@ class SpecialFBPixelManager extends SpecialPage {
 			->show();
 
 		$res = $dbr->select( 
-			'page_props',
-			[ 'pp_page', 'pp_value'],
-			array( 'pp_propname' => 'fb_pixel_id' ),
+			'fbpixelid_map',
+			[ 'page_id', 'pixel_id'],
+			true,
 			__METHOD__
 		);
 
@@ -54,8 +54,8 @@ class SpecialFBPixelManager extends SpecialPage {
 		foreach( $res as $row ) {
 			$out->addHTML( '
 					<tr>
-						<td>'. Title::newFromID( $row->pp_page )->getFullText() .'</td>
-						<td>'. $row->pp_value .'</td>
+						<td>'. Title::newFromID( $row->page_id )->getFullText() .'</td>
+						<td>'. $row->pixel_id .'</td>
 					</tr>
 			' );
 		}
@@ -79,26 +79,26 @@ class SpecialFBPixelManager extends SpecialPage {
 			$title = Title::newFromText( $title );
 
 			if ( !$title || !$title->getArticleID() ) {
-				return "Invalid Page: " . $pagename;
+				continue;
 			}
 
 			$existingValue = $dbr->selectField(
-				'page_props',
-				'pp_value',
-				[ 'pp_page' => $title->getArticleID(), 'pp_propname' => 'fb_pixel_id' ],
+				'fbpixelid_map',
+				'pixel_id',
+				[ 'page_id' => $title->getArticleID() ],
 				__METHOD__
 			);
 			if ( !$existingValue ) {
 				$dbw->insert(
-					'page_props',
-					[ 'pp_page' => $title->getArticleID(), 'pp_propname' => 'fb_pixel_id', 'pp_value' => $formData['pixel_id'] ],
+					'fbpixelid_map',
+					[ 'page_id' => $title->getArticleID(), 'pixel_id' => $formData['pixel_id'] ],
 					__METHOD__
 				);
 			} else {
 				$dbw->update(
-					'page_props',
-					[ 'pp_value' => $formData['pixel_id'] ],
-					[ 'pp_page' => $title->getArticleID(), 'pp_propname' => 'fb_pixel_id' ],
+					'fbpixelid_map',
+					[ 'pixel_id' => $formData['pixel_id'] ],
+					[ 'page_id' => $title->getArticleID() ],
 					__METHOD__
 				);
 			}

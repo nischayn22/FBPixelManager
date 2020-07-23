@@ -26,6 +26,9 @@
 	"Hooks": {
 		"BeforeInitialize": [
 			"FBPixelManager::onBeforeInitialize"
+		],
+		"LoadExtensionSchemaUpdates": [
+			"FBPixelManager::onLoadExtensionSchemaUpdates"
 		]
 	},
 	"AvailableRights": [
