@@ -52,6 +52,9 @@ class SpecialFBPixelManager extends SpecialPage {
 				</tr>
 		' );
 		foreach( $res as $row ) {
+			if ( !Title::newFromID( $row->page_id ) ) {
+				continue;
+			}
 			$out->addHTML( '
 					<tr>
 						<td>'. Title::newFromID( $row->page_id )->getFullText() .'</td>
